@@ -32,14 +32,6 @@ void setup() {
 }
 
 void loop() {
-  /*Serial.readBytes(serial, 1);
-  if (serial[0] == '1' && halytys == 0){
-    halytys == 1;
-  }
-  
-  if (serial[0] == '2' && halytys == 1){
-    halytys == 0;
-  }*/
   
   if(digitalRead(13) == HIGH && halytys == 0) {
   	halytys = 1;
@@ -73,7 +65,7 @@ void loop() {
   
   	delay(50);
     
-    //tone(10, 330);
+    tone(10, 330);
   
   	if (distance < 50) {
     digitalWrite(in1, LOW);
