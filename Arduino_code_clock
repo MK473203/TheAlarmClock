@@ -1,4 +1,6 @@
 //CODE OF THE ARDUINO RESPOSIBLE FOR CLOCK FUNCTIONALITY
+#include <LiquidCrystal.h>
+
 /*
   The circuit:
  * LCD RS pin to digital pin 12
@@ -14,7 +16,6 @@
  * ends to +5V and ground
  * wiper to LCD VO pin (pin 3)
 */
-#include <LiquidCrystal.h>
 
 // initialize the library with the numbers of the interface pins
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
@@ -32,7 +33,7 @@ int mode = 0;	// 0 for normal clock,
 				// 3 for setting alarm time,
 				// 4 for enabling/disabling alarm.
 
-const int timeScale = 60; // for testing purposes
+const int timeScale = 100; // for testing purposes
 
 int minutesSinceStart = 0;
 int hoursSinceStart = 0;
@@ -49,14 +50,13 @@ bool isAlarming = false;
 
 char timeText[10];
 
-char msgText[1] = {'1'};
-
 void setup() {
   Serial.begin(9600);
   
   pinMode(plusButton, INPUT);
   pinMode(modeButton, INPUT);
   pinMode(minusButton, INPUT);
+  pinMode(13, OUTPUT);
   lcd.begin(16, 2);
   lcd.print("Time:");
 }
@@ -149,12 +149,12 @@ void loop() {
   hoursSinceStart = (startMinutes + minutesSinceStart) / 60;
   
   if((startHours+hoursSinceStart) % 24 == alarmHours && (startMinutes+minutesSinceStart) % 60 == alarmMinutes && isAlarming == false) {
-  	Serial.write('1');
+  	digitalWrite(13, HIGH);
     isAlarming = true;
   }
   
   if(plusButtonState == HIGH || modeButtonState == HIGH || minusButtonState == HIGH) {
-  	Serial.write('2');
+  	digitalWrite(13, LOW);
     isAlarming = false;
   }
   
