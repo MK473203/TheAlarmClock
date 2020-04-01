@@ -8,11 +8,11 @@ long duration;
 int distance;
 int halytys = 0;
 
-int enA = 9;
-int in1 = 8;
-int in2 = 7;
+int enA = 8;
+int in1 = 2;
+int in2 = 3;
 
-int enB = 3;
+int enB = 9;
 int in3 = 5;
 int in4 = 4;
 
@@ -46,8 +46,8 @@ void loop() {
   	analogWrite(enA, 180);
 	analogWrite(enB, 180);
 
-	digitalWrite(in1, HIGH);
-	digitalWrite(in2, LOW);
+	digitalWrite(in1, LOW);
+	digitalWrite(in2, HIGH);
 	digitalWrite(in3, HIGH);
 	digitalWrite(in4, LOW);
   
