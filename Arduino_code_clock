@@ -148,14 +148,18 @@ void loop() {
   minutesSinceStart = millis() * timeScale / 60000;
   hoursSinceStart = (startMinutes + minutesSinceStart) / 60;
   
-  if((startHours+hoursSinceStart) % 24 == alarmHours && (startMinutes+minutesSinceStart) % 60 == alarmMinutes && isAlarming == false) {
-  	digitalWrite(13, HIGH);
-    isAlarming = true;
-  }
+  if(useAlarm) {
   
-  if(plusButtonState == HIGH || modeButtonState == HIGH || minusButtonState == HIGH) {
-  	digitalWrite(13, LOW);
-    isAlarming = false;
+    if((startHours+hoursSinceStart) % 24 == alarmHours && (startMinutes+minutesSinceStart) % 60 == alarmMinutes && isAlarming == false) {
+      digitalWrite(13, HIGH);
+      isAlarming = true;
+    }
+  
+    if(plusButtonState == HIGH || modeButtonState == HIGH || minusButtonState == HIGH) {
+      digitalWrite(13, LOW);
+      isAlarming = false;
+    }
+    
   }
   
   lcd.setCursor(0, 1);
