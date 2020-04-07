@@ -18,7 +18,7 @@ int mode = 0;			// 0 for normal clock,
 				// 3 for setting alarm time,
 				// 4 for enabling/disabling alarm.
 
-const int timeScale = 100; // for testing purposes, this controls the speed of 
+const int timeScale = 100; // for testing purposes, this controls the speed of how fast time is moving
 
 
 //intialize time etc. when powered up
