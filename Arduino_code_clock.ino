@@ -20,6 +20,8 @@ int mode = 0;			// 0 for normal clock,
 
 const int timeScale = 100; // for testing purposes, this controls the speed of 
 
+
+//intialize time etc. when powered up
 int minutesSinceStart = 0;
 int hoursSinceStart = 0;
 
@@ -36,7 +38,7 @@ bool isAlarming = false;
 char timeText[10];
 
 void setup() {
-	  Serial.begin(9600);
+	 Serial.begin(9600);
   
   	pinMode(plusButton, INPUT);
   	pinMode(modeButton, INPUT);
@@ -53,7 +55,7 @@ void loop() {
   	minusButtonState = digitalRead(minusButton);
   
 	
-
+	//if plusButton is pressed, depending of the mode of the clock either nothing happens or hours/minutes/alarm time is advanced
   	if(plusButtonState == HIGH) {
     		switch (mode) {
       		case 0:
@@ -77,11 +79,13 @@ void loop() {
       			break;
     		}
   	}
-  
+  	
+	//if modeButton (midlle one) is pressed, mode of the clock changes see meanings of different values 0-5 above
 	if(modeButtonState == HIGH) {
     		mode = (mode + 1) % 5;
   	}
 	
+	//if minusButton is pressed, depending of the mode of the clock either nothing happens or hours/minutes/alarm time is decreased
   	if(minusButtonState == HIGH) {
     		switch (mode) {
       		case 0:
@@ -109,6 +113,7 @@ void loop() {
     		}	
  	}
   
+	//Text to be printed on screen for different modes
 	switch (mode) {
   		case 0:
   			lcd.setCursor(0,0);
@@ -134,10 +139,11 @@ void loop() {
       			break;
     	}
   
-  
+  	//count passed time since powering up
   	minutesSinceStart = millis() * timeScale / 60000;
   	hoursSinceStart = (startMinutes + minutesSinceStart) / 60;
   
+	//if alarm triggers, send signal to other arduino
   	if(useAlarm) {
   
     		if((startHours+hoursSinceStart) % 24 == alarmHours && (startMinutes+minutesSinceStart) % 60 == alarmMinutes && isAlarming == false) {
@@ -145,6 +151,7 @@ void loop() {
       		isAlarming = true;
     	}
   
+	//if alarm is disabled by pressing any button, make other arduino stop what it's doing
     	if(plusButtonState == HIGH || modeButtonState == HIGH || minusButtonState == HIGH) {
       		digitalWrite(13, LOW);
       		isAlarming = false;
@@ -152,6 +159,8 @@ void loop() {
     
   	}
   
+	
+	//Values to be printed on screen in different modes
   	lcd.setCursor(0, 1);
   
   	if(mode <= 2) {
