@@ -47,7 +47,8 @@ void loop() {
   	if (halytys == 1){
   		analogWrite(enA, 180);
 		analogWrite(enB, 180);
-
+		//these analogWrites control the speed of motors, values 0-255
+		
 		digitalWrite(in1, LOW);
 		digitalWrite(in2, HIGH);
 		digitalWrite(in3, HIGH);
