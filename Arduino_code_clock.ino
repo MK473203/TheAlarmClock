@@ -27,7 +27,7 @@ int plusButtonState = 0;
 int modeButtonState = 0;
 int minusButtonState = 0;
 
-int mode = 0;	// 0 for normal clock,
+int mode = 0;			// 0 for normal clock,
 				// 1 for changing hours, 
 				// 2 for minutes,
 				// 3 for setting alarm time,
