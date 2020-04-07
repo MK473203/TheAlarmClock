@@ -65,11 +65,11 @@ void loop() {
   		Serial.print(distance);
   		Serial.println(" cm");
   	
-    	tone(10, 0);
+    	tone(10, 330);
     
   	delay(50);
     
-    	tone(10, 330);
+    	noTone(10);
   	
     	//if obstacle is in the way, the clock will stop for 0,5s
   	if (distance < 50) {
@@ -96,5 +96,6 @@ void loop() {
 		digitalWrite(in2, LOW);
 		digitalWrite(in3, LOW);
 		digitalWrite(in4, LOW);
+		noTone(10);
   }
 }
