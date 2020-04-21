@@ -2,22 +2,6 @@
 
 #include <LiquidCrystal.h>
 
-/*
-  The circuit:
- * LCD RS pin to digital pin 12
- * LCD Enable pin to digital pin 11
- * LCD D4 pin to digital pin 5
- * LCD D5 pin to digital pin 4
- * LCD D6 pin to digital pin 3
- * LCD D7 pin to digital pin 2
- * LCD R/W pin to ground
- * LCD VSS pin to ground
- * LCD VCC pin to 5V
- * 10K resistor:
- * ends to +5V and ground
- * wiper to LCD VO pin (pin 3)
-*/
-
 // initialize the library with the numbers of the interface pins
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
@@ -34,7 +18,9 @@ int mode = 0;	// 0 for normal clock,
 				// 3 for enabling/disabling alarm,
 				// 4 for setting alarm time.
 
-const int timeScale = 180; // for testing purposes, this controls the speed of how fast time is moving
+const int timeScale = 180; 	// for testing purposes, 
+				// this controls the speed of how fast time is moving.
+				// set it to 1 for real time time.
 
 //intialize time etc. when powered up
 int minutesSinceStart = 0;
