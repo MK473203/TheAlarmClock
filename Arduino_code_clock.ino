@@ -20,7 +20,7 @@ int mode = 0;	// 0 for normal clock,
 
 const int timeScale = 180; 	// for testing purposes, 
 				// this controls the speed of how fast time is moving.
-				// set it to 1 for real time time.
+				// set it to 1 for real-time time.
 
 //intialize time etc. when powered up
 int minutesSinceStart = 0;
