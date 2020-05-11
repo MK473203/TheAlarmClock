@@ -18,9 +18,9 @@ int mode = 0;	// 0 for normal clock,
 				// 3 for enabling/disabling alarm,
 				// 4 for setting alarm time.
 
-const int timeScale = 180; 	// for testing purposes, 
-				// this controls the speed of how fast time is moving.
-				// set it to 1 for real-time time.
+const int timeScale = 600; // for testing purposes, 
+						   // this controls the speed of how fast time is moving.
+						   // Set it to 1 for reqular speed time.
 
 //intialize time etc. when powered up
 int minutesSinceStart = 0;
@@ -29,7 +29,7 @@ int hoursSinceStart = 0;
 int startMinutes = 0;
 int startHours = 0;
 
-int alarmMinutes = 00;
+int alarmMinutes = 0;
 int alarmHours = 8;
 
 bool useAlarm = false;
@@ -64,7 +64,11 @@ void loop() {
       	startHours = (startHours + 1) % 24;
       	break;
       case 2:
-      	startMinutes = (startMinutes + 1) % 60;
+      	startMinutes++;
+      	if(startMinutes > 59) {
+         	//startMinutes = 0;
+      		//startHours = startHours - 1;
+      	}
       	break;
       case 3:
       	useAlarm = true;
@@ -83,6 +87,7 @@ void loop() {
   //if modeButton (midlle one) is pressed, mode of the clock changes see meanings of different values 0-5 above
   if(modeButtonState == HIGH) {
     mode = min(mode + 1, 4) % 4;
+    delay(100);
   }
   
   //if minusButton is pressed, depending of the mode of the clock either nothing happens or hours/minutes/alarm time is decreased
@@ -96,7 +101,10 @@ void loop() {
       	break;
       case 2:
       	startMinutes = startMinutes - 1;
-      	if(startMinutes < 0) startMinutes = 59;
+      	if(startMinutes < 0) {
+        	//startMinutes = 59;
+      		//startHours = startHours - 1;
+      	}
       	break;
       case 3:
       	useAlarm = false;
@@ -140,12 +148,34 @@ void loop() {
     }
   
   //count passed time since powering up
-  minutesSinceStart = millis() * timeScale / 60000;
+  minutesSinceStart = (millis() * timeScale / 60000);
   hoursSinceStart = (startMinutes + minutesSinceStart) / 60;
+  
+  int textHours = (startHours+hoursSinceStart) % 24;
+  int textMinutes = (startMinutes+minutesSinceStart) % 60;
+  if(textMinutes < 0) {
+    textMinutes += 60;
+  }
+  
+  //Values to be printed on screen in different modes
+  lcd.setCursor(0, 1);
+  
+  if(mode <= 2) {
+  	sprintf(timeText, "%02d:%02d           ", 
+           textHours,
+           textMinutes);
+  	lcd.print(timeText);
+  } else if (mode == 4) {
+  	sprintf(timeText, "%02d:%02d           ", 
+            alarmHours,
+            alarmMinutes);
+  	lcd.print(timeText);
+  }
+  
   
   if(useAlarm) {
   	//if alarm triggers, send signal to other arduino
-    if((startHours+hoursSinceStart) % 24 == alarmHours && (startMinutes+minutesSinceStart) % 60 == alarmMinutes && isAlarming == false) {
+    if(textHours == alarmHours && textMinutes == alarmMinutes && isAlarming == false) {
       digitalWrite(13, HIGH);
       isAlarming = true;
     }
@@ -155,21 +185,6 @@ void loop() {
       isAlarming = false;
     }
     
-  }
-  
-  //Values to be printed on screen in different modes
-  lcd.setCursor(0, 1);
-  
-  if(mode <= 2) {
-  	sprintf(timeText, "%02d:%02d           ", 
-           (startHours+hoursSinceStart) % 24,
-           (startMinutes+minutesSinceStart) % 60);
-  	lcd.print(timeText);
-  } else if (mode == 4) {
-  	sprintf(timeText, "%02d:%02d           ", 
-            alarmHours,
-            alarmMinutes);
-  	lcd.print(timeText);
   }
   
   delay(50);
